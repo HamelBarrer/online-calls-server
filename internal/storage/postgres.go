@@ -4,15 +4,16 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/spf13/viper"
 )
 
-type Postgres struct {
+type postgres struct {
 	p *pgxpool.Pool
 }
 
-func NewPostgres() (*Postgres, error) {
+func NewPostgres() (SQL, error) {
 	viper.SetConfigFile(".env")
 	if err := viper.ReadInConfig(); err != nil {
 		return nil, err
@@ -31,5 +32,13 @@ func NewPostgres() (*Postgres, error) {
 		return nil, err
 	}
 
-	return &Postgres{p}, nil
+	return &postgres{p}, nil
+}
+
+func (p *postgres) QueryRow(query string, args ...interface{}) pgx.Row {
+	return p.p.QueryRow(context.Background(), query, args...)
+}
+
+func (p *postgres) Query(query string, args ...interface{}) (pgx.Rows, error) {
+	return p.p.Query(context.Background(), query, args...)
 }
