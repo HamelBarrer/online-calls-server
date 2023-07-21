@@ -70,7 +70,7 @@ func generateRandomBytes(n uint32) ([]byte, error) {
 func decodeHash(encodedHash string) (p *params, salt, hash []byte, err error) {
 	vals := strings.Split(encodedHash, "$")
 	if len(vals) != 6 {
-		return nil, nil, nil, errors.New("Format incorrect of password")
+		return nil, nil, nil, errors.New("format incorrect of password")
 	}
 
 	var version int
@@ -79,7 +79,7 @@ func decodeHash(encodedHash string) (p *params, salt, hash []byte, err error) {
 		return nil, nil, nil, err
 	}
 	if version != argon2.Version {
-		return nil, nil, nil, errors.New("Version incompatible")
+		return nil, nil, nil, errors.New("version incompatible")
 	}
 
 	p = &params{}
