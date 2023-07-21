@@ -13,7 +13,9 @@ func ValidationEmptyValues[T comparable](data T) (string, bool) {
 		field := t.Field(i)
 		value := v.Field(i)
 
-		if reflect.DeepEqual(value.Interface(), reflect.Zero(value.Type()).Interface()) {
+		required := field.Tag.Get("required")
+
+		if required == "true" && reflect.DeepEqual(value.Interface(), reflect.Zero(value.Type()).Interface()) {
 			if field.Anonymous {
 				innerValues := reflect.ValueOf(value.Interface())
 
