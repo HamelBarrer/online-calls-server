@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/HamelBarrer/online-calls-server/internal/core/auth"
+	channelmessages "github.com/HamelBarrer/online-calls-server/internal/core/channel/channel_messages"
 	channelstates "github.com/HamelBarrer/online-calls-server/internal/core/channel/channel_states"
 	"github.com/HamelBarrer/online-calls-server/internal/core/channel/channels"
 	"github.com/HamelBarrer/online-calls-server/internal/core/user/user"
@@ -37,6 +38,10 @@ func main() {
 	cr := channels.Newrepository(db)
 	cc := channels.NewEchoRouter(e)
 	cc.SetupRoute(cr)
+
+	cmr := channelmessages.Newrepository(db)
+	cmc := channelmessages.NewEchoRouter(e)
+	cmc.SetupRoute(cmr)
 
 	e.Logger.Fatal(e.Start(":3000"))
 }
